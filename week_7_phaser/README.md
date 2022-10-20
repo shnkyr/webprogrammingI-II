@@ -1,0 +1,29 @@
+# Game Developed for Project submission for web Programming
+# Developed by Shankar Sapkota
+# Developed using phaser 
+
+Source of info during development learning process:
+
+1. https://shakuro.com/blog/phaser-js-a-step-by-step-tutorial-on-making-a-phaser-3-game
+2. https://phaser.io/docs/2.6.2/index
+3. https://phaser.io/docs/2.6.2/index
+4. https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser
+
+# How to run this game ?
+
+Step 1: Download the whole file from my github
+Step 2: Extract the Zip file
+Step 3: Open the index.html page 
+Step 4: Hyvä ! Start playing game
+
+# Configs and playing setup
+
+Press Space bar button to start the Game
+
+Player 1 : Move Up using ' A '
+           Move Down using ' Z '
+
+Player 2 : Move up using ' Up Button'
+           Move Down using ' Down Button ' 
+
+           ENJOY :)
