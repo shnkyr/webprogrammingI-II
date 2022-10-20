@@ -2,6 +2,7 @@
 # Developed by Shankar Sapkota
 # Developed using phaser 
 
+# See Live at : https://shnkyr.github.io/webprogrammingI/week_7_phaser
 Source of info during development learning process:
 
 1. https://shakuro.com/blog/phaser-js-a-step-by-step-tutorial-on-making-a-phaser-3-game
