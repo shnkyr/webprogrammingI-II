@@ -10,6 +10,17 @@ Source of info during development learning process:
 3. https://phaser.io/docs/2.6.2/index
 4. https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_breakout_game_Phaser
 
+# Game info:
+
+In this game there is two player, you can play from your keyboard as multiplayer. 
+In this game the open border is the 'enemy' and touching or servicing the ball to other player is the points you will collect.
+
+So the features are :
+      1. Point collection by serving the ball
+      2. Enemy acts as open border , if you missed the ball
+      3. It's multiplayer, so the communication in game is enabled.
+      4. This game is simple and developed using phaser.
+
 # How to run this game ?
 
 Step 1: Download the whole file from my github
