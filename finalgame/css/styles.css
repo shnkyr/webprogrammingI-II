@@ -1,4 +1,10 @@
-body
-{
-	background-color: lightgreen;
+
+* { margin: 0; padding: 0; }
+
+body { 
+	background-color: lightgreen; 
 }
+canvas { 
+	display: block;
+	 }
+
