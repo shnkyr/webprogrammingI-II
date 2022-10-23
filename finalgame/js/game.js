@@ -12,7 +12,7 @@ var gameOptions = {
   skyColor: 0xaaeaff,
   safeRadius: 180,
   localStorageName: "climbgame",
-  versionNumber: "2.0"
+  versionNumber: "1.0"
 
 }
 window.onload = function () {
