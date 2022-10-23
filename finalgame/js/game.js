@@ -33,15 +33,14 @@ preloadGame.prototype = {
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
     game.stage.disableVisibilityChange = true;
-    game.load.image("floor", "assets/floor.png");
-    game.load.image("actor", "assets/actor.png");
-    game.load.image("ladder", "assets/ladder.png");
-    game.load.image("diamond", "assets/diamond.png");
-    game.load.image("diamondparticle", "assets/diamondparticle.png");
-    game.load.image("spike", "assets/spike.png");
-    game.load.image("cloud", "assets/cloud.png");
-    game.load.bitmapFont("font", "assets/font.png", "assets/font.fnt");
-  },
+    game.load.image("floor", "images/floor.png");
+    game.load.image("actor", "images/actor.png");
+    game.load.image("rocket", "images/rocket.png");
+    game.load.image("diamond", "images/diamond.png");
+    game.load.image("diamondparticle", "images/diamondparticle.png");
+    game.load.image("spike", "images/alien.png");
+    game.load.image("cloud", "images/cloud.png");
+   },
   create: function () {
     game.state.start("PlayGame");
   }
@@ -101,13 +100,13 @@ playGame.prototype = {
     this.highestFloorY = game.height * gameOptions.floorStart;
     this.floorsBeforeDisappear = Math.ceil((game.height - game.height * (gameOptions.floorStart)) / gameOptions.floorGap) + 1;
     this.floorPool = [];
-    this.ladderPool = [];
+    this.rocketPool = [];
     this.diamondPool = [];
     this.spikePool = [];
     while (this.highestFloorY > -2 * gameOptions.floorGap) {
       this.addFloor();
       if (this.currentFloor > 0) {
-        this.addLadder();
+        this.addrocket();
         this.addDiamond();
         this.addSpike();
       }
@@ -131,25 +130,25 @@ playGame.prototype = {
       floor.body.checkCollision.down = false;
     }
   },
-  addLadder: function () {
-    var ladderXPosition = game.rnd.integerInRange(50, game.width - 50);
-    if (this.ladderPool.length > 0) {
-      var ladder = this.ladderPool.pop();
-      ladder.x = ladderXPosition;
-      ladder.y = this.highestFloorY;
-      ladder.revive();
+  addrocket: function () {
+    var rocketXPosition = game.rnd.integerInRange(50, game.width - 50);
+    if (this.rocketPool.length > 0) {
+      var rocket = this.rocketPool.pop();
+      rocket.x = rocketXPosition;
+      rocket.y = this.highestFloorY;
+      rocket.revive();
     } else {
-      var ladder = game.add.sprite(ladderXPosition, this.highestFloorY, "ladder");
-      this.ladderGroup.add(ladder);
-      ladder.anchor.set(0.5, 0);
-      game.physics.enable(ladder, Phaser.Physics.ARCADE);
-      ladder.body.immovable = true;
+      var rocket = game.add.sprite(rocketXPosition, this.highestFloorY, "rocket");
+      this.rocketGroup.add(rocket);
+      rocket.anchor.set(0.5, 0);
+      game.physics.enable(rocket, Phaser.Physics.ARCADE);
+      rocket.body.immovable = true;
     }
     this.safeZone = [];
     this.safeZone.length = 0;
     this.safeZone.push({
-      start: ladderXPosition - gameOptions.safeRadius,
-      end: ladderXPosition + gameOptions.safeRadius
+      start: rocketXPosition - gameOptions.safeRadius,
+      end: rocketXPosition + gameOptions.safeRadius
     });
   },
   addDiamond: function () {
@@ -259,8 +258,8 @@ playGame.prototype = {
                 case "floor":
                   this.killFloor(subItem);
                   break;
-                case "ladder":
-                  this.killLadder(subItem);
+                case "rocket":
+                  this.killrocket(subItem);
                   break;
                 case "diamond":
                   this.killDiamond(subItem);
@@ -276,7 +275,7 @@ playGame.prototype = {
         }
       }, this);
       this.addFloor();
-      this.addLadder();
+      this.addrocket();
       this.addDiamond();
       this.addSpike();
       if (this.tweensToGo > 0) {
@@ -288,13 +287,13 @@ playGame.prototype = {
   defineGroups: function () {
     this.gameGroup = game.add.group();
     this.floorGroup = game.add.group();
-    this.ladderGroup = game.add.group();
+    this.rocketGroup = game.add.group();
     this.diamondGroup = game.add.group();
     this.spikeGroup = game.add.group();
     this.overlayGroup = game.add.group();
     this.menuGroup = game.add.group();
     this.gameGroup.add(this.floorGroup);
-    this.gameGroup.add(this.ladderGroup);
+    this.gameGroup.add(this.rocketGroup);
     this.gameGroup.add(this.diamondGroup);
     this.gameGroup.add(this.spikeGroup);
   },
@@ -310,7 +309,7 @@ playGame.prototype = {
   update: function () {
     if (!this.gameOver) {
       this.checkFloorCollision();
-      this.checkLadderCollision();
+      this.checkrocketCollision();
       this.checkDiamondCollision();
       this.checkSpikeCollision();
     }
@@ -320,11 +319,11 @@ playGame.prototype = {
       this.canJump = true;
     }, null, this);
   },
-  checkLadderCollision: function () {
+  checkrocketCollision: function () {
     if (!this.isClimbing) {
-      game.physics.arcade.overlap(this.actor, this.ladderGroup, function (player, ladder) {
-        if (Math.abs(player.x - ladder.x) < 10) {
-          this.ladderToClimb = ladder;
+      game.physics.arcade.overlap(this.actor, this.rocketGroup, function (player, rocket) {
+        if (Math.abs(player.x - rocket.x) < 10) {
+          this.rocketToClimb = rocket;
           this.actor.body.velocity.x = 0;
           this.actor.body.velocity.y = -gameOptions.climbSpeed;
           this.actor.body.gravity.y = 0;
@@ -337,7 +336,7 @@ playGame.prototype = {
         }
       }, null, this);
     } else {
-      if (this.actor.y < this.ladderToClimb.y - 40) {
+      if (this.actor.y < this.rocketToClimb.y - 40) {
         this.actor.body.gravity.y = gameOptions.playerGravity;
         this.actor.body.velocity.x = gameOptions.playerSpeed * this.actor.scale.x;
         this.actor.body.velocity.y = 0;
@@ -369,9 +368,9 @@ playGame.prototype = {
     floor.kill();
     this.floorPool.push(floor);
   },
-  killLadder: function (ladder) {
-    ladder.kill();
-    this.ladderPool.push(ladder);
+  killrocket: function (rocket) {
+    rocket.kill();
+    this.rocketPool.push(rocket);
   },
   killDiamond: function (diamond) {
     diamond.kill();
