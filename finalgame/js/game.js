@@ -90,10 +90,10 @@ playGame.prototype = {
     tapTween = game.add.tween(tap).to({
       alpha: 0
     }, 200, Phaser.Easing.Cubic.InOut, true, 0, -1, true);
-    var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Tap to jump", 45);
+    var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Tap & Climb the ladder", 45);
     tapText.anchor.set(0.5);
     this.menuGroup.add(tapText);
-    var titleText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "LADDERZ", 90);
+    var titleText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUNTER", 90);
     titleText.anchor.set(0.5);
     this.menuGroup.add(titleText);
   },
