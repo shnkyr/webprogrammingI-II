@@ -34,13 +34,12 @@ preloadGame.prototype = {
     game.scale.pageAlignVertically = true;
     game.stage.disableVisibilityChange = true;
     game.load.image("floor", "assets/floor.png");
-    game.load.image("hero", "assets/hero.png");
+    game.load.image("actor", "assets/actor.png");
     game.load.image("ladder", "assets/ladder.png");
     game.load.image("diamond", "assets/diamond.png");
     game.load.image("diamondparticle", "assets/diamondparticle.png");
     game.load.image("spike", "assets/spike.png");
     game.load.image("cloud", "assets/cloud.png");
-    game.load.image("tap", "assets/tap.png");
     game.load.bitmapFont("font", "assets/font.png", "assets/font.fnt");
   },
   create: function () {
@@ -117,7 +116,7 @@ playGame.prototype = {
     }
     this.highestFloorY += gameOptions.floorGap;
     this.currentFloor = 0;
-    this.addHero();
+    this.addactor();
   },
   addFloor: function () {
     if (this.floorPool.length > 0) {
@@ -216,23 +215,23 @@ playGame.prototype = {
     }
     return true;
   },
-  addHero: function () {
-    this.hero = game.add.sprite(game.width / 2, game.height * gameOptions.floorStart - 40, "hero");
-    this.gameGroup.add(this.hero)
-    this.hero.anchor.set(0.5, 0);
-    game.physics.enable(this.hero, Phaser.Physics.ARCADE);
-    this.hero.body.collideWorldBounds = true;
-    this.hero.body.gravity.y = gameOptions.playerGravity;
-    this.hero.body.velocity.x = gameOptions.playerSpeed;
-    this.hero.body.onWorldBounds = new Phaser.Signal();
-    this.hero.body.onWorldBounds.add(function (sprite, up, down, left, right) {
+  addactor: function () {
+    this.actor = game.add.sprite(game.width / 2, game.height * gameOptions.floorStart - 40, "actor");
+    this.gameGroup.add(this.actor)
+    this.actor.anchor.set(0.5, 0);
+    game.physics.enable(this.actor, Phaser.Physics.ARCADE);
+    this.actor.body.collideWorldBounds = true;
+    this.actor.body.gravity.y = gameOptions.playerGravity;
+    this.actor.body.velocity.x = gameOptions.playerSpeed;
+    this.actor.body.onWorldBounds = new Phaser.Signal();
+    this.actor.body.onWorldBounds.add(function (sprite, up, down, left, right) {
       if (left) {
-        this.hero.body.velocity.x = gameOptions.playerSpeed;
-        this.hero.scale.x = 1;
+        this.actor.body.velocity.x = gameOptions.playerSpeed;
+        this.actor.scale.x = 1;
       }
       if (right) {
-        this.hero.body.velocity.x = -gameOptions.playerSpeed;
-        this.hero.scale.x = -1;
+        this.actor.body.velocity.x = -gameOptions.playerSpeed;
+        this.actor.scale.x = -1;
       }
       if (down) {
         var score = this.reachedFloor * this.collectedDiamonds;
@@ -304,7 +303,7 @@ playGame.prototype = {
       this.menuGroup.destroy();
     }
     if (this.canJump && !this.isClimbing && !this.gameOver) {
-      this.hero.body.velocity.y = -gameOptions.playerJump;
+      this.actor.body.velocity.y = -gameOptions.playerJump;
       this.canJump = false;
     }
   },
@@ -317,18 +316,18 @@ playGame.prototype = {
     }
   },
   checkFloorCollision: function () {
-    game.physics.arcade.collide(this.hero, this.floorGroup, function () {
+    game.physics.arcade.collide(this.actor, this.floorGroup, function () {
       this.canJump = true;
     }, null, this);
   },
   checkLadderCollision: function () {
     if (!this.isClimbing) {
-      game.physics.arcade.overlap(this.hero, this.ladderGroup, function (player, ladder) {
+      game.physics.arcade.overlap(this.actor, this.ladderGroup, function (player, ladder) {
         if (Math.abs(player.x - ladder.x) < 10) {
           this.ladderToClimb = ladder;
-          this.hero.body.velocity.x = 0;
-          this.hero.body.velocity.y = -gameOptions.climbSpeed;
-          this.hero.body.gravity.y = 0;
+          this.actor.body.velocity.x = 0;
+          this.actor.body.velocity.y = -gameOptions.climbSpeed;
+          this.actor.body.gravity.y = 0;
           this.isClimbing = true;
           if (this.scrollTween.isRunning) {
             this.tweensToGo++;
@@ -338,10 +337,10 @@ playGame.prototype = {
         }
       }, null, this);
     } else {
-      if (this.hero.y < this.ladderToClimb.y - 40) {
-        this.hero.body.gravity.y = gameOptions.playerGravity;
-        this.hero.body.velocity.x = gameOptions.playerSpeed * this.hero.scale.x;
-        this.hero.body.velocity.y = 0;
+      if (this.actor.y < this.ladderToClimb.y - 40) {
+        this.actor.body.gravity.y = gameOptions.playerGravity;
+        this.actor.body.velocity.x = gameOptions.playerSpeed * this.actor.scale.x;
+        this.actor.body.velocity.y = 0;
         this.isClimbing = false;
         this.reachedFloor++;
         this.scoreText.text = (this.collectedDiamonds * this.reachedFloor).toString();
@@ -349,7 +348,7 @@ playGame.prototype = {
     }
   },
   checkDiamondCollision: function () {
-    game.physics.arcade.overlap(this.hero, this.diamondGroup, function (player, diamond) {
+    game.physics.arcade.overlap(this.actor, this.diamondGroup, function (player, diamond) {
       this.emitter.x = diamond.x;
       this.emitter.y = diamond.y;
       this.emitter.start(true, 1000, null, 20);
@@ -359,11 +358,11 @@ playGame.prototype = {
     }, null, this);
   },
   checkSpikeCollision: function () {
-    game.physics.arcade.overlap(this.hero, this.spikeGroup, function () {
+    game.physics.arcade.overlap(this.actor, this.spikeGroup, function () {
       this.gameOver = true;
-      this.hero.body.velocity.x = game.rnd.integerInRange(-20, 20);
-      this.hero.body.velocity.y = -gameOptions.playerJump;
-      this.hero.body.gravity.y = gameOptions.playerGravity;
+      this.actor.body.velocity.x = game.rnd.integerInRange(-20, 20);
+      this.actor.body.velocity.y = -gameOptions.playerJump;
+      this.actor.body.gravity.y = gameOptions.playerGravity;
     }, null, this);
   },
   killFloor: function (floor) {
