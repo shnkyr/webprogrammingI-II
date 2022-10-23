@@ -1,6 +1,6 @@
 var game;
 var gameOptions = {
-  gameWidth: 1500,
+  gameWidth: 800,
   landStart: 1 / 8 * 5,
   landGap: 250,
   playerGravity: 10000,
@@ -9,7 +9,7 @@ var gameOptions = {
   playerJump: 1800,
   earthRatio: 2,
   doubleSpikeRatio: 1,
-  skyColor: 0x00ff00,
+  skyColor: 0x0000ff,
   safeRadius: 180,
   localStorageName: "climbgame",
   versionNumber: "1.0"
