@@ -1,6 +1,6 @@
 var game;
 var gameOptions = {
-  gameWidth: 800,
+  gameWidth: 1500,
   landStart: 1 / 8 * 5,
   landGap: 250,
   playerGravity: 10000,
