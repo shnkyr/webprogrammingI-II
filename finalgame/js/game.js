@@ -7,7 +7,7 @@ var gameOptions = {
   playerSpeed: 450,
   climbSpeed: 450,
   playerJump: 1800,
-  diamondRatio: 2,
+  earthRatio: 2,
   doubleSpikeRatio: 1,
   skyColor: 0xaaeaff,
   safeRadius: 180,
@@ -36,8 +36,8 @@ preloadGame.prototype = {
     game.load.image("floor", "images/floor.png");
     game.load.image("actor", "images/actor.png");
     game.load.image("rocket", "images/rocket.png");
-    game.load.image("diamond", "images/diamond.png");
-    game.load.image("diamondparticle", "images/diamondparticle.png");
+    game.load.image("earth", "images/earth.png");
+    game.load.image("earthparticle", "images/earthparticle.png");
     game.load.image("spike", "images/alien.png");
     game.load.image("cloud", "images/cloud.png");
     game.load.bitmapFont("font", "images/font.png", "images/font.fnt");
@@ -54,13 +54,13 @@ playGame.prototype = {
     } : JSON.parse(localStorage.getItem(gameOptions.localStorageName));
     this.gameOver = false;
     this.reachedFloor = 0;
-    this.collectedDiamonds = 0;
+    this.collectedearths = 0;
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.canJump = true;
     this.isClimbing = false;
     this.defineGroups();
     this.emitter = game.add.emitter(0, 0, 80);
-    this.emitter.makeParticles("diamondparticle");
+    this.emitter.makeParticles("earthparticle");
     this.emitter.setAlpha(0.4, 0.6);
     this.emitter.setScale(0.4, 0.6, 0.4, 0.6);
     this.gameGroup.add(this.emitter);
@@ -102,13 +102,13 @@ playGame.prototype = {
     this.floorsBeforeDisappear = Math.ceil((game.height - game.height * (gameOptions.floorStart)) / gameOptions.floorGap) + 1;
     this.floorPool = [];
     this.rocketPool = [];
-    this.diamondPool = [];
+    this.earthPool = [];
     this.spikePool = [];
     while (this.highestFloorY > -2 * gameOptions.floorGap) {
       this.addFloor();
       if (this.currentFloor > 0) {
         this.addrocket();
-        this.addDiamond();
+        this.addearth();
         this.addSpike();
       }
       this.highestFloorY -= gameOptions.floorGap;
@@ -152,20 +152,20 @@ playGame.prototype = {
       end: rocketXPosition + gameOptions.safeRadius
     });
   },
-  addDiamond: function () {
-    if (game.rnd.integerInRange(0, gameOptions.diamondRatio) != 0) {
-      var diamondX = game.rnd.integerInRange(50, game.width - 50);
-      if (this.diamondPool.length > 0) {
-        var diamond = this.diamondPool.pop();
-        diamond.x = diamondX;
-        diamond.y = this.highestFloorY - gameOptions.floorGap / 2;
-        diamond.revive();
+  addearth: function () {
+    if (game.rnd.integerInRange(0, gameOptions.earthRatio) != 0) {
+      var earthX = game.rnd.integerInRange(50, game.width - 50);
+      if (this.earthPool.length > 0) {
+        var earth = this.earthPool.pop();
+        earth.x = earthX;
+        earth.y = this.highestFloorY - gameOptions.floorGap / 2;
+        earth.revive();
       } else {
-        var diamond = game.add.sprite(diamondX, this.highestFloorY - gameOptions.floorGap / 2, "diamond");
-        diamond.anchor.set(0.5);
-        game.physics.enable(diamond, Phaser.Physics.ARCADE);
-        diamond.body.immovable = true;
-        this.diamondGroup.add(diamond);
+        var earth = game.add.sprite(earthX, this.highestFloorY - gameOptions.floorGap / 2, "earth");
+        earth.anchor.set(0.5);
+        game.physics.enable(earth, Phaser.Physics.ARCADE);
+        earth.body.immovable = true;
+        this.earthGroup.add(earth);
       }
     }
   },
@@ -234,7 +234,7 @@ playGame.prototype = {
         this.actor.scale.x = -1;
       }
       if (down) {
-        var score = this.reachedFloor * this.collectedDiamonds;
+        var score = this.reachedFloor * this.collectedearths;
         localStorage.setItem(gameOptions.localStorageName, JSON.stringify({
           score: Math.max(score, this.savedData.score)
         }));
@@ -262,8 +262,8 @@ playGame.prototype = {
                 case "rocket":
                   this.killrocket(subItem);
                   break;
-                case "diamond":
-                  this.killDiamond(subItem);
+                case "earth":
+                  this.killearth(subItem);
                   break;
                 case "spike":
                   this.killSpike(subItem);
@@ -277,7 +277,7 @@ playGame.prototype = {
       }, this);
       this.addFloor();
       this.addrocket();
-      this.addDiamond();
+      this.addearth();
       this.addSpike();
       if (this.tweensToGo > 0) {
         this.tweensToGo--;
@@ -289,13 +289,13 @@ playGame.prototype = {
     this.gameGroup = game.add.group();
     this.floorGroup = game.add.group();
     this.rocketGroup = game.add.group();
-    this.diamondGroup = game.add.group();
+    this.earthGroup = game.add.group();
     this.spikeGroup = game.add.group();
     this.overlayGroup = game.add.group();
     this.menuGroup = game.add.group();
     this.gameGroup.add(this.floorGroup);
     this.gameGroup.add(this.rocketGroup);
-    this.gameGroup.add(this.diamondGroup);
+    this.gameGroup.add(this.earthGroup);
     this.gameGroup.add(this.spikeGroup);
   },
   handleTap: function (pointer, doubleTap) {
@@ -311,7 +311,7 @@ playGame.prototype = {
     if (!this.gameOver) {
       this.checkFloorCollision();
       this.checkrocketCollision();
-      this.checkDiamondCollision();
+      this.checkearthCollision();
       this.checkSpikeCollision();
     }
   },
@@ -343,18 +343,18 @@ playGame.prototype = {
         this.actor.body.velocity.y = 0;
         this.isClimbing = false;
         this.reachedFloor++;
-        this.scoreText.text = (this.collectedDiamonds * this.reachedFloor).toString();
+        this.scoreText.text = (this.collectedearths * this.reachedFloor).toString();
       }
     }
   },
-  checkDiamondCollision: function () {
-    game.physics.arcade.overlap(this.actor, this.diamondGroup, function (player, diamond) {
-      this.emitter.x = diamond.x;
-      this.emitter.y = diamond.y;
+  checkearthCollision: function () {
+    game.physics.arcade.overlap(this.actor, this.earthGroup, function (player, earth) {
+      this.emitter.x = earth.x;
+      this.emitter.y = earth.y;
       this.emitter.start(true, 1000, null, 20);
-      this.collectedDiamonds++;
-      this.scoreText.text = (this.collectedDiamonds * this.reachedFloor).toString();
-      this.killDiamond(diamond);
+      this.collectedearths++;
+      this.scoreText.text = (this.collectedearths * this.reachedFloor).toString();
+      this.killearth(earth);
     }, null, this);
   },
   checkSpikeCollision: function () {
@@ -373,9 +373,9 @@ playGame.prototype = {
     rocket.kill();
     this.rocketPool.push(rocket);
   },
-  killDiamond: function (diamond) {
-    diamond.kill();
-    this.diamondPool.push(diamond);
+  killearth: function (earth) {
+    earth.kill();
+    this.earthPool.push(earth);
   },
   killSpike: function (spike) {
     spike.kill();
