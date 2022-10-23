@@ -92,7 +92,7 @@ playGame.prototype = {
     var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Tap & Climb the Rocket", 45);
     tapText.anchor.set(0.5);
     this.menuGroup.add(tapText);
-    var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUuNTER", 90);
+    var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUNTER", 90);
     welcomeText.anchor.set(0.5);
     this.menuGroup.add(welcomeText);
   },
