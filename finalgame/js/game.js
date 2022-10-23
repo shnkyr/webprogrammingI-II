@@ -1,8 +1,8 @@
 var game;
 var gameOptions = {
   gameWidth: 800,
-  floorStart: 1 / 8 * 5,
-  floorGap: 250,
+  landStart: 1 / 8 * 5,
+  landGap: 250,
   playerGravity: 10000,
   playerSpeed: 450,
   climbSpeed: 450,
@@ -33,7 +33,7 @@ preloadGame.prototype = {
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
     game.stage.disableVisibilityChange = true;
-    game.load.image("floor", "images/floor.png");
+    game.load.image("land", "images/land.png");
     game.load.image("actor", "images/actor.png");
     game.load.image("rocket", "images/rocket.png");
     game.load.image("earth", "images/earth.png");
@@ -53,7 +53,7 @@ playGame.prototype = {
       score: 0
     } : JSON.parse(localStorage.getItem(gameOptions.localStorageName));
     this.gameOver = false;
-    this.reachedFloor = 0;
+    this.reachedland = 0;
     this.collectedearths = 0;
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.canJump = true;
@@ -92,43 +92,43 @@ playGame.prototype = {
     var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Tap & Climb the Rocket", 45);
     tapText.anchor.set(0.5);
     this.menuGroup.add(tapText);
-    var titleText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUNTER", 90);
-    titleText.anchor.set(0.5);
-    this.menuGroup.add(titleText);
+    var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKqY HUNTER", 90);
+    welcomeText.anchor.set(0.5);
+    this.menuGroup.add(welcomeText);
   },
   drawLevel: function () {
-    this.currentFloor = 0;
-    this.highestFloorY = game.height * gameOptions.floorStart;
-    this.floorsBeforeDisappear = Math.ceil((game.height - game.height * (gameOptions.floorStart)) / gameOptions.floorGap) + 1;
-    this.floorPool = [];
+    this.currentland = 0;
+    this.highestlandY = game.height * gameOptions.landStart;
+    this.landsBeforeDisappear = Math.ceil((game.height - game.height * (gameOptions.landStart)) / gameOptions.landGap) + 1;
+    this.landPool = [];
     this.rocketPool = [];
     this.earthPool = [];
     this.spikePool = [];
-    while (this.highestFloorY > -2 * gameOptions.floorGap) {
-      this.addFloor();
-      if (this.currentFloor > 0) {
+    while (this.highestlandY > -2 * gameOptions.landGap) {
+      this.addland();
+      if (this.currentland > 0) {
         this.addrocket();
         this.addearth();
         this.addSpike();
       }
-      this.highestFloorY -= gameOptions.floorGap;
-      this.currentFloor++;
+      this.highestlandY -= gameOptions.landGap;
+      this.currentland++;
     }
-    this.highestFloorY += gameOptions.floorGap;
-    this.currentFloor = 0;
+    this.highestlandY += gameOptions.landGap;
+    this.currentland = 0;
     this.addactor();
   },
-  addFloor: function () {
-    if (this.floorPool.length > 0) {
-      var floor = this.floorPool.pop();
-      floor.y = this.highestFloorY;
-      floor.revive();
+  addland: function () {
+    if (this.landPool.length > 0) {
+      var land = this.landPool.pop();
+      land.y = this.highestlandY;
+      land.revive();
     } else {
-      var floor = game.add.sprite(0, this.highestFloorY, "floor");
-      this.floorGroup.add(floor);
-      game.physics.enable(floor, Phaser.Physics.ARCADE);
-      floor.body.immovable = true;
-      floor.body.checkCollision.down = false;
+      var land = game.add.sprite(0, this.highestlandY, "land");
+      this.landGroup.add(land);
+      game.physics.enable(land, Phaser.Physics.ARCADE);
+      land.body.immovable = true;
+      land.body.checkCollision.down = false;
     }
   },
   addrocket: function () {
@@ -136,10 +136,10 @@ playGame.prototype = {
     if (this.rocketPool.length > 0) {
       var rocket = this.rocketPool.pop();
       rocket.x = rocketXPosition;
-      rocket.y = this.highestFloorY;
+      rocket.y = this.highestlandY;
       rocket.revive();
     } else {
-      var rocket = game.add.sprite(rocketXPosition, this.highestFloorY, "rocket");
+      var rocket = game.add.sprite(rocketXPosition, this.highestlandY, "rocket");
       this.rocketGroup.add(rocket);
       rocket.anchor.set(0.5, 0);
       game.physics.enable(rocket, Phaser.Physics.ARCADE);
@@ -158,10 +158,10 @@ playGame.prototype = {
       if (this.earthPool.length > 0) {
         var earth = this.earthPool.pop();
         earth.x = earthX;
-        earth.y = this.highestFloorY - gameOptions.floorGap / 2;
+        earth.y = this.highestlandY - gameOptions.landGap / 2;
         earth.revive();
       } else {
-        var earth = game.add.sprite(earthX, this.highestFloorY - gameOptions.floorGap / 2, "earth");
+        var earth = game.add.sprite(earthX, this.highestlandY - gameOptions.landGap / 2, "earth");
         earth.anchor.set(0.5);
         game.physics.enable(earth, Phaser.Physics.ARCADE);
         earth.body.immovable = true;
@@ -180,10 +180,10 @@ playGame.prototype = {
         if (this.spikePool.length > 0) {
           var spike = this.spikePool.pop();
           spike.x = spikeXPosition;
-          spike.y = this.highestFloorY - 20;
+          spike.y = this.highestlandY - 20;
           spike.revive();
         } else {
-          var spike = game.add.sprite(spikeXPosition, this.highestFloorY - 20, "spike");
+          var spike = game.add.sprite(spikeXPosition, this.highestlandY - 20, "spike");
           spike.anchor.set(0.5, 0);
           game.physics.enable(spike, Phaser.Physics.ARCADE);
           spike.body.immovable = true;
@@ -216,7 +216,7 @@ playGame.prototype = {
     return true;
   },
   addactor: function () {
-    this.actor = game.add.sprite(game.width / 2, game.height * gameOptions.floorStart - 40, "actor");
+    this.actor = game.add.sprite(game.width / 2, game.height * gameOptions.landStart - 40, "actor");
     this.gameGroup.add(this.actor)
     this.actor.anchor.set(0.5, 0);
     game.physics.enable(this.actor, Phaser.Physics.ARCADE);
@@ -234,7 +234,7 @@ playGame.prototype = {
         this.actor.scale.x = -1;
       }
       if (down) {
-        var score = this.reachedFloor * this.collectedearths;
+        var score = this.reachedland * this.collectedearths;
         localStorage.setItem(gameOptions.localStorageName, JSON.stringify({
           score: Math.max(score, this.savedData.score)
         }));
@@ -246,18 +246,18 @@ playGame.prototype = {
     this.tweensToGo = 0;
     this.scrollTween = game.add.tween(this.gameGroup);
     this.scrollTween.to({
-      y: gameOptions.floorGap
+      y: gameOptions.landGap
     }, 500, Phaser.Easing.Cubic.Out);
     this.scrollTween.onComplete.add(function () {
       this.gameGroup.y = 0;
       this.gameGroup.forEach(function (item) {
         if (item.length > 0) {
           item.forEach(function (subItem) {
-            subItem.y += gameOptions.floorGap;
+            subItem.y += gameOptions.landGap;
             if (subItem.y > game.height) {
               switch (subItem.key) {
-                case "floor":
-                  this.killFloor(subItem);
+                case "land":
+                  this.killland(subItem);
                   break;
                 case "rocket":
                   this.killrocket(subItem);
@@ -272,10 +272,10 @@ playGame.prototype = {
             }
           }, this);
         } else {
-          item.y += gameOptions.floorGap;
+          item.y += gameOptions.landGap;
         }
       }, this);
-      this.addFloor();
+      this.addland();
       this.addrocket();
       this.addearth();
       this.addSpike();
@@ -287,13 +287,13 @@ playGame.prototype = {
   },
   defineGroups: function () {
     this.gameGroup = game.add.group();
-    this.floorGroup = game.add.group();
+    this.landGroup = game.add.group();
     this.rocketGroup = game.add.group();
     this.earthGroup = game.add.group();
     this.spikeGroup = game.add.group();
     this.overlayGroup = game.add.group();
     this.menuGroup = game.add.group();
-    this.gameGroup.add(this.floorGroup);
+    this.gameGroup.add(this.landGroup);
     this.gameGroup.add(this.rocketGroup);
     this.gameGroup.add(this.earthGroup);
     this.gameGroup.add(this.spikeGroup);
@@ -309,14 +309,14 @@ playGame.prototype = {
   },
   update: function () {
     if (!this.gameOver) {
-      this.checkFloorCollision();
+      this.checklandCollision();
       this.checkrocketCollision();
       this.checkearthCollision();
       this.checkSpikeCollision();
     }
   },
-  checkFloorCollision: function () {
-    game.physics.arcade.collide(this.actor, this.floorGroup, function () {
+  checklandCollision: function () {
+    game.physics.arcade.collide(this.actor, this.landGroup, function () {
       this.canJump = true;
     }, null, this);
   },
@@ -342,8 +342,8 @@ playGame.prototype = {
         this.actor.body.velocity.x = gameOptions.playerSpeed * this.actor.scale.x;
         this.actor.body.velocity.y = 0;
         this.isClimbing = false;
-        this.reachedFloor++;
-        this.scoreText.text = (this.collectedearths * this.reachedFloor).toString();
+        this.reachedland++;
+        this.scoreText.text = (this.collectedearths * this.reachedland).toString();
       }
     }
   },
@@ -353,7 +353,7 @@ playGame.prototype = {
       this.emitter.y = earth.y;
       this.emitter.start(true, 1000, null, 20);
       this.collectedearths++;
-      this.scoreText.text = (this.collectedearths * this.reachedFloor).toString();
+      this.scoreText.text = (this.collectedearths * this.reachedland).toString();
       this.killearth(earth);
     }, null, this);
   },
@@ -365,9 +365,9 @@ playGame.prototype = {
       this.actor.body.gravity.y = gameOptions.playerGravity;
     }, null, this);
   },
-  killFloor: function (floor) {
-    floor.kill();
-    this.floorPool.push(floor);
+  killland: function (land) {
+    land.kill();
+    this.landPool.push(land);
   },
   killrocket: function (rocket) {
     rocket.kill();
