@@ -74,10 +74,10 @@ playGame.prototype = {
     cloud.anchor.set(0, 1);
     cloud.tint = gameOptions.skyColor;
     this.overlayGroup.add(cloud);
-    var highScoreText = game.add.bitmapText(game.width - 10, game.height - 10, "font", "Highest Point: " + this.savedData.score.toString(), 30);
+    var highScoreText = game.add.bitmapText(game.width - 10, game.height - 10,  "Highest Point: " + this.savedData.score.toString(), 30);
     highScoreText.anchor.set(1, 1);
     this.overlayGroup.add(highScoreText);
-    this.scoreText = game.add.bitmapText(10, game.height - 10, "font", "Your Point: 0", 30);
+    this.scoreText = game.add.bitmapText(10, game.height - 10,  "Your Point: 0", 30);
     this.scoreText.anchor.set(0, 1);
     this.overlayGroup.add(this.scoreText);
   },
@@ -88,10 +88,10 @@ playGame.prototype = {
     tapTween = game.add.tween(tap).to({
       alpha: 0
     }, 200, Phaser.Easing.Cubic.InOut, true, 0, -1, true);
-    var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Tap & Climb the tunnel", 45);
+    var tapText = game.add.bitmapText(game.width / 2, tap.y - 120,  "Tap & Climb the tunnel", 45);
     tapText.anchor.set(0.5);
     this.menuGroup.add(tapText);
-    var titleText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUNTER", 90);
+    var titleText = game.add.bitmapText(game.width / 2, tap.y - 200,  "SKY HUNTER", 90);
     titleText.anchor.set(0.5);
     this.menuGroup.add(titleText);
   },
