@@ -12,13 +12,14 @@ var gameOptions = {
   skyColor: 0xaaeaff,
   safeRadius: 180,
   localStorageName: "climbgame",
-  versionNumber: "1.0"
+  versionNumber: "2.0"
+
 }
 window.onload = function () {
   var windowWidth = window.innerWidth;
   var windowHeight = window.innerHeight;
   if (windowWidth > windowHeight) {
-    windowHeight = windowWidth * 1.8
+    windowHeight = windowWidth * 5.8
   }
   game = new Phaser.Game(gameOptions.gameWidth, windowHeight * gameOptions.gameWidth / windowWidth);
   game.state.add("PreloadGame", preloadGame);
@@ -89,7 +90,7 @@ playGame.prototype = {
     tapTween = game.add.tween(tap).to({
       alpha: 0
     }, 200, Phaser.Easing.Cubic.InOut, true, 0, -1, true);
-    var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Tap & Climb the tunnel", 45);
+    var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Tap & Climb the rocket ", 45);
     tapText.anchor.set(0.5);
     this.menuGroup.add(tapText);
     var titleText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUNTER", 90);
