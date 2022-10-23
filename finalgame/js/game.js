@@ -39,7 +39,7 @@ preloadGame.prototype = {
     game.load.image("earth", "images/earth.png");
     game.load.image("earthparticle", "images/earthparticle.png");
     game.load.image("spike", "images/alien.png");
-    game.load.image("cloud", "images/cloud.png");
+    game.load.image("sky", "images/sky.png");
     game.load.bitmapFont("font", "images/font.png", "images/font.fnt");
   },
   create: function () {
@@ -71,10 +71,10 @@ playGame.prototype = {
     game.input.onTap.add(this.handleTap, this);
   },
   createOverlay: function () {
-    var cloud = game.add.sprite(0, game.height, "cloud");
-    cloud.anchor.set(0, 1);
-    cloud.tint = gameOptions.skyColor;
-    this.overlayGroup.add(cloud);
+    var sky = game.add.sprite(0, game.height, "sky");
+    sky.anchor.set(0, 1);
+    sky.tint = gameOptions.skyColor;
+    this.overlayGroup.add(sky);
     var highScoreText = game.add.bitmapText(game.width - 10, game.height - 10, "font", "Highest Point: " + this.savedData.score.toString(), 30);
     highScoreText.anchor.set(1, 1);
     this.overlayGroup.add(highScoreText);
