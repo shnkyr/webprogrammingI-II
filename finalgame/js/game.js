@@ -75,10 +75,10 @@ playGame.prototype = {
     sky.anchor.set(0, 1);
     sky.tint = gameOptions.skyColor;
     this.overlayGroup.add(sky);
-    var highScoreText = game.add.bitmapText(game.width - 2, game.height - 20, "font", "Highest Point: " + this.savedData.score.toString(), 30);
+    var highScoreText = game.add.bitmapText(game.width - 2, game.height - 300, "font", "Highest Point: " + this.savedData.score.toString(), 30);
     highScoreText.anchor.set(1, 1);
     this.overlayGroup.add(highScoreText);
-    this.scoreText = game.add.bitmapText(10, game.height - 2, "font", "Yours Point: 0", 30);
+    this.scoreText = game.add.bitmapText(10, game.height - 300, "font", "Yours Point: 0", 30);
     this.scoreText.anchor.set(0, 1);
     this.overlayGroup.add(this.scoreText);
   },
