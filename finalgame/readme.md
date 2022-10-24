@@ -29,9 +29,13 @@ DEVELOPER: SHANKAR SAPKOTA
 # Steps to play
 
 Step 1: Click inside the gaming zone area anywhere to start
+
 Step 2 : Starting clicking to bounce the main player.
+
 Step 3 : When tree or rocket is near , click to go upward and jump where UFO or deamons icon are.
+
 Step 4 : Jump and take apple or earth point bonus to get score.
+
 Step 5 : Go upwards as much as you can till 30 steps.
 
 # TO DO IN FUTURE UPDATE
