@@ -75,7 +75,7 @@ playGame.prototype = {
     sky.anchor.set(0, 1);
     sky.tint = gameOptions.skyColor;
     this.overlayGroup.add(sky);
-    var highScoreText = game.add.bitmapText(game.width - 2, game.height - 2, "font", "Highest Point: " + this.savedData.score.toString(), 30);
+    var highScoreText = game.add.bitmapText(game.width - 2, game.height - 20, "font", "Highest Point: " + this.savedData.score.toString(), 30);
     highScoreText.anchor.set(1, 1);
     this.overlayGroup.add(highScoreText);
     this.scoreText = game.add.bitmapText(10, game.height - 2, "font", "Yours Point: 0", 30);
@@ -84,8 +84,8 @@ playGame.prototype = {
   },
 
    createMenu: function () {
-    var tap = game.add.sprite(game.width / 9, game.height - 500, "tap");
-    tap.anchor.set(8.5);
+    var tap = game.add.sprite(game.width / 3, game.height - 300, "tap");
+    tap.anchor.set(0.5);
     this.menuGroup.add(tap);
     tapTween = game.add.tween(tap).to({
       alpha: 0
@@ -93,7 +93,7 @@ playGame.prototype = {
     var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Tap & Climb the Rocket", 45);
     tapText.anchor.set(0.5);
     this.menuGroup.add(tapText);
-    var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUNTER", 90);
+    var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKqY HUNTER", 90);
     welcomeText.anchor.set(0.5);
     this.menuGroup.add(welcomeText);
   }, 
