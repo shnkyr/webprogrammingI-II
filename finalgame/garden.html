@@ -10,16 +10,21 @@
 
 canvas { display: block; }
 </style>
+<script type="text/javascript">
+	const music = new Audio('assets/music.wav');
+	music.play();
+</script>
 <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 <center>
-	<font><h1><u>ESCAPE TO SKY </h1></u>
+	<h1><u>ESCAPE TO SKY </h1></u>
 	<p>Choose Your Theme :</font></p> &nbsp; &nbsp; &nbsp; <a href="index.html"> <button> &nbsp; Space Theme&nbsp;  </button></a> 
 	 <a href="#"><button>&nbsp; Santa Theme(Selected) &nbsp; </button></a>
+	<button id ="endall" onClick="history.go(0);">&nbsp; END GAME &nbsp; </button>
 </center>		
 <script src="assets/lib/phaser.min.js"></script>
 <script src="js/gamegarden.js"></script>
-<embed src="assets/music.wav" loop="true" autostart="true" width="0" height="0">
+//<embed src="assets/music.mp3" loop="true" autostart="true" width="0" height="0">
 </body>
 </html>

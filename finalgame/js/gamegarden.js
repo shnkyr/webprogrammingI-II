@@ -381,3 +381,11 @@ playGame.prototype = {
     this.spikePool.push(spike);
   },
 }
+
+const endbutton = document.querySelector("endall");
+endbutton.addEventListener("click",endgame);
+
+function endgame()
+{
+  window.localStorageName.clear();
+}
