@@ -84,7 +84,7 @@ playGame.prototype = {
   },
 
    createMenu: function () {
-    var tap = game.add.sprite(game.width / 4, game.height - 150, "tap");
+    var tap = game.add.sprite(game.width / 5, game.height - 300, "tap");
     tap.anchor.set(0.5);
     this.menuGroup.add(tap);
     tapTween = game.add.tween(tap).to({
