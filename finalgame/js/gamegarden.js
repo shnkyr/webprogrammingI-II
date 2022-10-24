@@ -35,7 +35,7 @@ preloadGame.prototype = {
     game.stage.disableVisibilityChange = true;
     game.load.image("land", "images/land.png");
     game.load.image("santa", "images/santa.png");
-    game.load.image("rocket", "images/rocket.png");
+    game.load.image("santatree", "images/santatree.png");
     game.load.image("earth", "images/earth.png");
     game.load.image("earthparticle", "images/earthparticle.png");
     game.load.image("spike", "images/alien.png");
@@ -100,13 +100,13 @@ playGame.prototype = {
     this.highestlandY = game.height * gameOptions.landStart;
     this.landsBeforeDisappear = Math.ceil((game.height - game.height * (gameOptions.landStart)) / gameOptions.landGap) + 1;
     this.landPool = [];
-    this.rocketPool = [];
+    this.santatreePool = [];
     this.earthPool = [];
     this.spikePool = [];
     while (this.highestlandY > -2 * gameOptions.landGap) {
       this.addland();
       if (this.currentland > 0) {
-        this.addrocket();
+        this.addsantatree();
         this.addearth();
         this.addSpike();
       }
@@ -130,25 +130,25 @@ playGame.prototype = {
       land.body.checkCollision.down = false;
     }
   },
-  addrocket: function () {
-    var rocketXPosition = game.rnd.integerInRange(50, game.width - 50);
-    if (this.rocketPool.length > 0) {
-      var rocket = this.rocketPool.pop();
-      rocket.x = rocketXPosition;
-      rocket.y = this.highestlandY;
-      rocket.revive();
+  addsantatree: function () {
+    var santatreeXPosition = game.rnd.integerInRange(50, game.width - 50);
+    if (this.santatreePool.length > 0) {
+      var santatree = this.santatreePool.pop();
+      santatree.x = santatreeXPosition;
+      santatree.y = this.highestlandY;
+      santatree.revive();
     } else {
-      var rocket = game.add.sprite(rocketXPosition, this.highestlandY, "rocket");
-      this.rocketGroup.add(rocket);
-      rocket.anchor.set(0.5, 0);
-      game.physics.enable(rocket, Phaser.Physics.ARCADE);
-      rocket.body.immovable = true;
+      var santatree = game.add.sprite(santatreeXPosition, this.highestlandY, "santatree");
+      this.santatreeGroup.add(santatree);
+      santatree.anchor.set(0.5, 0);
+      game.physics.enable(santatree, Phaser.Physics.ARCADE);
+      santatree.body.immovable = true;
     }
     this.safeZone = [];
     this.safeZone.length = 0;
     this.safeZone.push({
-      start: rocketXPosition - gameOptions.safeRadius,
-      end: rocketXPosition + gameOptions.safeRadius
+      start: santatreeXPosition - gameOptions.safeRadius,
+      end: santatreeXPosition + gameOptions.safeRadius
     });
   },
   addearth: function () {
@@ -258,8 +258,8 @@ playGame.prototype = {
                 case "land":
                   this.killland(subItem);
                   break;
-                case "rocket":
-                  this.killrocket(subItem);
+                case "santatree":
+                  this.killsantatree(subItem);
                   break;
                 case "earth":
                   this.killearth(subItem);
@@ -275,7 +275,7 @@ playGame.prototype = {
         }
       }, this);
       this.addland();
-      this.addrocket();
+      this.addsantatree();
       this.addearth();
       this.addSpike();
       if (this.tweensToGo > 0) {
@@ -287,13 +287,13 @@ playGame.prototype = {
   defineGroups: function () {
     this.gameGroup = game.add.group();
     this.landGroup = game.add.group();
-    this.rocketGroup = game.add.group();
+    this.santatreeGroup = game.add.group();
     this.earthGroup = game.add.group();
     this.spikeGroup = game.add.group();
     this.overlayGroup = game.add.group();
     this.menuGroup = game.add.group();
     this.gameGroup.add(this.landGroup);
-    this.gameGroup.add(this.rocketGroup);
+    this.gameGroup.add(this.santatreeGroup);
     this.gameGroup.add(this.earthGroup);
     this.gameGroup.add(this.spikeGroup);
   },
@@ -309,7 +309,7 @@ playGame.prototype = {
   update: function () {
     if (!this.gameOver) {
       this.checklandCollision();
-      this.checkrocketCollision();
+      this.checksantatreeCollision();
       this.checkearthCollision();
       this.checkSpikeCollision();
     }
@@ -319,11 +319,11 @@ playGame.prototype = {
       this.canJump = true;
     }, null, this);
   },
-  checkrocketCollision: function () {
+  checksantatreeCollision: function () {
     if (!this.isClimbing) {
-      game.physics.arcade.overlap(this.santa, this.rocketGroup, function (player, rocket) {
-        if (Math.abs(player.x - rocket.x) < 10) {
-          this.rocketToClimb = rocket;
+      game.physics.arcade.overlap(this.santa, this.santatreeGroup, function (player, santatree) {
+        if (Math.abs(player.x - santatree.x) < 10) {
+          this.santatreeToClimb = santatree;
           this.santa.body.velocity.x = 0;
           this.santa.body.velocity.y = -gameOptions.climbSpeed;
           this.santa.body.gravity.y = 0;
@@ -336,7 +336,7 @@ playGame.prototype = {
         }
       }, null, this);
     } else {
-      if (this.santa.y < this.rocketToClimb.y - 40) {
+      if (this.santa.y < this.santatreeToClimb.y - 40) {
         this.santa.body.gravity.y = gameOptions.playerGravity;
         this.santa.body.velocity.x = gameOptions.playerSpeed * this.santa.scale.x;
         this.santa.body.velocity.y = 0;
@@ -368,9 +368,9 @@ playGame.prototype = {
     land.kill();
     this.landPool.push(land);
   },
-  killrocket: function (rocket) {
-    rocket.kill();
-    this.rocketPool.push(rocket);
+  killsantatree: function (santatree) {
+    santatree.kill();
+    this.santatreePool.push(santatree);
   },
   killearth: function (earth) {
     earth.kill();
