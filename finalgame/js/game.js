@@ -83,7 +83,7 @@ playGame.prototype = {
     this.overlayGroup.add(this.scoreText);
   },
 
-  /* createMenu: function () {
+   createMenu: function () {
     var tap = game.add.sprite(game.width / 2, game.height - 150, "tap");
     tap.anchor.set(0.5);
     this.menuGroup.add(tap);
@@ -96,8 +96,8 @@ playGame.prototype = {
     //var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKqY HUNTER", 90);
     //welcomeText.anchor.set(0.5);
     //this.menuGroup.add(welcomeText);
-  }, */
-  
+  }, 
+
   drawLevel: function () {
     this.currentland = 0;
     this.highestlandY = game.height * gameOptions.landStart;
