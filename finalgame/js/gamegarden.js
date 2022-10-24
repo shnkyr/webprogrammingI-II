@@ -1,13 +1,13 @@
 var game;
 var gameOptions = {
   gameWidth: 800,
-  landStart: 1 / 8 * 5,
-  landGap: 250,
+  bannerStart: 1 / 8 * 5,
+  bannerGap: 250,
   playerGravity: 10000,
   playerSpeed: 450,
   climbSpeed: 450,
   playerJump: 1800,
-  earthRatio: 2,
+  pointappleRatio: 2,
   doubleSpikeRatio: 1,
   skyColor: 0xaaeaff,
   safeRadius: 180,
@@ -33,12 +33,12 @@ preloadGame.prototype = {
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
     game.stage.disableVisibilityChange = true;
-    game.load.image("land", "images/land.png");
+    game.load.image("banner", "images/banner.png");
     game.load.image("santa", "images/santa.png");
     game.load.image("santatree", "images/santatree.png");
-    game.load.image("earth", "images/earth.png");
-    game.load.image("earthparticle", "images/earthparticle.png");
-    game.load.image("spike", "images/alien.png");
+    game.load.image("pointapple", "images/pointapple.png");
+    game.load.image("pointappleparticle", "images/pointappleparticle.png");
+    game.load.image("spike", "images/enemy.png");
     game.load.bitmapFont("font", "images/font.png", "images/font.fnt");
   },
   create: function () {
@@ -52,14 +52,14 @@ playGame.prototype = {
       score: 0
     } : JSON.parse(localStorage.getItem(gameOptions.localStorageName));
     this.gameOver = false;
-    this.reachedland = 0;
-    this.collectedearths = 0;
+    this.reachedbanner = 0;
+    this.collectedpointapples = 0;
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.canJump = true;
     this.isClimbing = false;
     this.defineGroups();
     this.emitter = game.add.emitter(0, 0, 80);
-    this.emitter.makeParticles("earthparticle");
+    this.emitter.makeParticles("pointappleparticle");
     this.emitter.setAlpha(0.4, 0.6);
     this.emitter.setScale(0.4, 0.6, 0.4, 0.6);
     this.gameGroup.add(this.emitter);
@@ -96,38 +96,38 @@ playGame.prototype = {
   }, 
 
   drawLevel: function () {
-    this.currentland = 0;
-    this.highestlandY = game.height * gameOptions.landStart;
-    this.landsBeforeDisappear = Math.ceil((game.height - game.height * (gameOptions.landStart)) / gameOptions.landGap) + 1;
-    this.landPool = [];
+    this.currentbanner = 0;
+    this.highestbannerY = game.height * gameOptions.bannerStart;
+    this.bannersBeforeDisappear = Math.ceil((game.height - game.height * (gameOptions.bannerStart)) / gameOptions.bannerGap) + 1;
+    this.bannerPool = [];
     this.santatreePool = [];
-    this.earthPool = [];
+    this.pointapplePool = [];
     this.spikePool = [];
-    while (this.highestlandY > -2 * gameOptions.landGap) {
-      this.addland();
-      if (this.currentland > 0) {
+    while (this.highestbannerY > -2 * gameOptions.bannerGap) {
+      this.addbanner();
+      if (this.currentbanner > 0) {
         this.addsantatree();
-        this.addearth();
+        this.addpointapple();
         this.addSpike();
       }
-      this.highestlandY -= gameOptions.landGap;
-      this.currentland++;
+      this.highestbannerY -= gameOptions.bannerGap;
+      this.currentbanner++;
     }
-    this.highestlandY += gameOptions.landGap;
-    this.currentland = 0;
+    this.highestbannerY += gameOptions.bannerGap;
+    this.currentbanner = 0;
     this.addsanta();
   },
-  addland: function () {
-    if (this.landPool.length > 0) {
-      var land = this.landPool.pop();
-      land.y = this.highestlandY;
-      land.revive();
+  addbanner: function () {
+    if (this.bannerPool.length > 0) {
+      var banner = this.bannerPool.pop();
+      banner.y = this.highestbannerY;
+      banner.revive();
     } else {
-      var land = game.add.sprite(0, this.highestlandY, "land");
-      this.landGroup.add(land);
-      game.physics.enable(land, Phaser.Physics.ARCADE);
-      land.body.immovable = true;
-      land.body.checkCollision.down = false;
+      var banner = game.add.sprite(0, this.highestbannerY, "banner");
+      this.bannerGroup.add(banner);
+      game.physics.enable(banner, Phaser.Physics.ARCADE);
+      banner.body.immovable = true;
+      banner.body.checkCollision.down = false;
     }
   },
   addsantatree: function () {
@@ -135,10 +135,10 @@ playGame.prototype = {
     if (this.santatreePool.length > 0) {
       var santatree = this.santatreePool.pop();
       santatree.x = santatreeXPosition;
-      santatree.y = this.highestlandY;
+      santatree.y = this.highestbannerY;
       santatree.revive();
     } else {
-      var santatree = game.add.sprite(santatreeXPosition, this.highestlandY, "santatree");
+      var santatree = game.add.sprite(santatreeXPosition, this.highestbannerY, "santatree");
       this.santatreeGroup.add(santatree);
       santatree.anchor.set(0.5, 0);
       game.physics.enable(santatree, Phaser.Physics.ARCADE);
@@ -151,20 +151,20 @@ playGame.prototype = {
       end: santatreeXPosition + gameOptions.safeRadius
     });
   },
-  addearth: function () {
-    if (game.rnd.integerInRange(0, gameOptions.earthRatio) != 0) {
-      var earthX = game.rnd.integerInRange(50, game.width - 50);
-      if (this.earthPool.length > 0) {
-        var earth = this.earthPool.pop();
-        earth.x = earthX;
-        earth.y = this.highestlandY - gameOptions.landGap / 2;
-        earth.revive();
+  addpointapple: function () {
+    if (game.rnd.integerInRange(0, gameOptions.pointappleRatio) != 0) {
+      var pointappleX = game.rnd.integerInRange(50, game.width - 50);
+      if (this.pointapplePool.length > 0) {
+        var pointapple = this.pointapplePool.pop();
+        pointapple.x = pointappleX;
+        pointapple.y = this.highestbannerY - gameOptions.bannerGap / 2;
+        pointapple.revive();
       } else {
-        var earth = game.add.sprite(earthX, this.highestlandY - gameOptions.landGap / 2, "earth");
-        earth.anchor.set(0.5);
-        game.physics.enable(earth, Phaser.Physics.ARCADE);
-        earth.body.immovable = true;
-        this.earthGroup.add(earth);
+        var pointapple = game.add.sprite(pointappleX, this.highestbannerY - gameOptions.bannerGap / 2, "pointapple");
+        pointapple.anchor.set(0.5);
+        game.physics.enable(pointapple, Phaser.Physics.ARCADE);
+        pointapple.body.immovable = true;
+        this.pointappleGroup.add(pointapple);
       }
     }
   },
@@ -179,10 +179,10 @@ playGame.prototype = {
         if (this.spikePool.length > 0) {
           var spike = this.spikePool.pop();
           spike.x = spikeXPosition;
-          spike.y = this.highestlandY - 20;
+          spike.y = this.highestbannerY - 20;
           spike.revive();
         } else {
-          var spike = game.add.sprite(spikeXPosition, this.highestlandY - 20, "spike");
+          var spike = game.add.sprite(spikeXPosition, this.highestbannerY - 20, "spike");
           spike.anchor.set(0.5, 0);
           game.physics.enable(spike, Phaser.Physics.ARCADE);
           spike.body.immovable = true;
@@ -215,7 +215,7 @@ playGame.prototype = {
     return true;
   },
   addsanta: function () {
-    this.santa = game.add.sprite(game.width / 2, game.height * gameOptions.landStart - 40, "santa");
+    this.santa = game.add.sprite(game.width / 2, game.height * gameOptions.bannerStart - 40, "santa");
     this.gameGroup.add(this.santa)
     this.santa.anchor.set(0.5, 0);
     game.physics.enable(this.santa, Phaser.Physics.ARCADE);
@@ -233,7 +233,7 @@ playGame.prototype = {
         this.santa.scale.x = -1;
       }
       if (down) {
-        var score = this.reachedland * this.collectedearths;
+        var score = this.reachedbanner * this.collectedpointapples;
         localStorage.setItem(gameOptions.localStorageName, JSON.stringify({
           score: Math.max(score, this.savedData.score)
         }));
@@ -245,24 +245,24 @@ playGame.prototype = {
     this.tweensToGo = 0;
     this.scrollTween = game.add.tween(this.gameGroup);
     this.scrollTween.to({
-      y: gameOptions.landGap
+      y: gameOptions.bannerGap
     }, 500, Phaser.Easing.Cubic.Out);
     this.scrollTween.onComplete.add(function () {
       this.gameGroup.y = 0;
       this.gameGroup.forEach(function (item) {
         if (item.length > 0) {
           item.forEach(function (subItem) {
-            subItem.y += gameOptions.landGap;
+            subItem.y += gameOptions.bannerGap;
             if (subItem.y > game.height) {
               switch (subItem.key) {
-                case "land":
-                  this.killland(subItem);
+                case "banner":
+                  this.killbanner(subItem);
                   break;
                 case "santatree":
                   this.killsantatree(subItem);
                   break;
-                case "earth":
-                  this.killearth(subItem);
+                case "pointapple":
+                  this.killpointapple(subItem);
                   break;
                 case "spike":
                   this.killSpike(subItem);
@@ -271,12 +271,12 @@ playGame.prototype = {
             }
           }, this);
         } else {
-          item.y += gameOptions.landGap;
+          item.y += gameOptions.bannerGap;
         }
       }, this);
-      this.addland();
+      this.addbanner();
       this.addsantatree();
-      this.addearth();
+      this.addpointapple();
       this.addSpike();
       if (this.tweensToGo > 0) {
         this.tweensToGo--;
@@ -286,15 +286,15 @@ playGame.prototype = {
   },
   defineGroups: function () {
     this.gameGroup = game.add.group();
-    this.landGroup = game.add.group();
+    this.bannerGroup = game.add.group();
     this.santatreeGroup = game.add.group();
-    this.earthGroup = game.add.group();
+    this.pointappleGroup = game.add.group();
     this.spikeGroup = game.add.group();
     this.overlayGroup = game.add.group();
     this.menuGroup = game.add.group();
-    this.gameGroup.add(this.landGroup);
+    this.gameGroup.add(this.bannerGroup);
     this.gameGroup.add(this.santatreeGroup);
-    this.gameGroup.add(this.earthGroup);
+    this.gameGroup.add(this.pointappleGroup);
     this.gameGroup.add(this.spikeGroup);
   },
   handleTap: function (pointer, doubleTap) {
@@ -308,14 +308,14 @@ playGame.prototype = {
   },
   update: function () {
     if (!this.gameOver) {
-      this.checklandCollision();
+      this.checkbannerCollision();
       this.checksantatreeCollision();
-      this.checkearthCollision();
+      this.checkpointappleCollision();
       this.checkSpikeCollision();
     }
   },
-  checklandCollision: function () {
-    game.physics.arcade.collide(this.santa, this.landGroup, function () {
+  checkbannerCollision: function () {
+    game.physics.arcade.collide(this.santa, this.bannerGroup, function () {
       this.canJump = true;
     }, null, this);
   },
@@ -341,19 +341,19 @@ playGame.prototype = {
         this.santa.body.velocity.x = gameOptions.playerSpeed * this.santa.scale.x;
         this.santa.body.velocity.y = 0;
         this.isClimbing = false;
-        this.reachedland++;
-        this.scoreText.text = (this.collectedearths * this.reachedland).toString();
+        this.reachedbanner++;
+        this.scoreText.text = (this.collectedpointapples * this.reachedbanner).toString();
       }
     }
   },
-  checkearthCollision: function () {
-    game.physics.arcade.overlap(this.santa, this.earthGroup, function (player, earth) {
-      this.emitter.x = earth.x;
-      this.emitter.y = earth.y;
+  checkpointappleCollision: function () {
+    game.physics.arcade.overlap(this.santa, this.pointappleGroup, function (player, pointapple) {
+      this.emitter.x = pointapple.x;
+      this.emitter.y = pointapple.y;
       this.emitter.start(true, 1000, null, 20);
-      this.collectedearths++;
-      this.scoreText.text = (this.collectedearths * this.reachedland).toString();
-      this.killearth(earth);
+      this.collectedpointapples++;
+      this.scoreText.text = (this.collectedpointapples * this.reachedbanner).toString();
+      this.killpointapple(pointapple);
     }, null, this);
   },
   checkSpikeCollision: function () {
@@ -364,17 +364,17 @@ playGame.prototype = {
       this.santa.body.gravity.y = gameOptions.playerGravity;
     }, null, this);
   },
-  killland: function (land) {
-    land.kill();
-    this.landPool.push(land);
+  killbanner: function (banner) {
+    banner.kill();
+    this.bannerPool.push(banner);
   },
   killsantatree: function (santatree) {
     santatree.kill();
     this.santatreePool.push(santatree);
   },
-  killearth: function (earth) {
-    earth.kill();
-    this.earthPool.push(earth);
+  killpointapple: function (pointapple) {
+    pointapple.kill();
+    this.pointapplePool.push(pointapple);
   },
   killSpike: function (spike) {
     spike.kill();
