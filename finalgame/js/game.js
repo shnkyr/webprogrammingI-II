@@ -39,7 +39,7 @@ preloadGame.prototype = {
     game.load.image("earth", "images/earth.png");
     game.load.image("earthparticle", "images/earthparticle.png");
     game.load.image("spike", "images/alien.png");
-    game.load.image("sky", "images/sky.png");
+   // game.load.image("sky", "images/sky.png");
     game.load.bitmapFont("font", "images/font.png", "images/font.fnt");
   },
   create: function () {
@@ -82,7 +82,8 @@ playGame.prototype = {
     this.scoreText.anchor.set(0, 1);
     this.overlayGroup.add(this.scoreText);
   },
-  createMenu: function () {
+
+  /* createMenu: function () {
     var tap = game.add.sprite(game.width / 2, game.height - 150, "tap");
     tap.anchor.set(0.5);
     this.menuGroup.add(tap);
@@ -95,7 +96,8 @@ playGame.prototype = {
     //var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKqY HUNTER", 90);
     //welcomeText.anchor.set(0.5);
     //this.menuGroup.add(welcomeText);
-  },
+  }, */
+  
   drawLevel: function () {
     this.currentland = 0;
     this.highestlandY = game.height * gameOptions.landStart;
