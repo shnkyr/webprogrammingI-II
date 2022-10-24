@@ -39,7 +39,6 @@ preloadGame.prototype = {
     game.load.image("earth", "images/earth.png");
     game.load.image("earthparticle", "images/earthparticle.png");
     game.load.image("spike", "images/alien.png");
-   // game.load.image("sky", "images/sky.png");
     game.load.bitmapFont("font", "images/font.png", "images/font.fnt");
   },
   create: function () {
@@ -85,7 +84,7 @@ playGame.prototype = {
 
    createMenu: function () {
     var tap = game.add.sprite(game.width / 3, game.height - 300, "tap");
-    tap.anchor.set(0.5);
+    tap.anchor.set(9.5);
     this.menuGroup.add(tap);
     tapTween = game.add.tween(tap).to({
       alpha: 0
@@ -93,9 +92,7 @@ playGame.prototype = {
     var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Click on Game Screen to Start", 45);
     tapText.anchor.set(0.5);
     this.menuGroup.add(tapText);
-    //var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUNTER", 90);
-    //welcomeText.anchor.set(0.5);
-    //this.menuGroup.add(welcomeText);
+    
   }, 
 
   drawLevel: function () {
