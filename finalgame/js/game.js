@@ -90,12 +90,12 @@ playGame.prototype = {
     tapTween = game.add.tween(tap).to({
       alpha: 0
     }, 200, Phaser.Easing.Cubic.InOut, true, 0, -1, true);
-    var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Tap & Climb the Rocket", 45);
+    var tapText = game.add.bitmapText(game.width / 2, tap.y - 120, "font", "Click on Screen to Start", 45);
     tapText.anchor.set(0.5);
     this.menuGroup.add(tapText);
-    var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUNTER", 90);
-    welcomeText.anchor.set(0.5);
-    this.menuGroup.add(welcomeText);
+    //var welcomeText = game.add.bitmapText(game.width / 2, tap.y - 200, "font", "SKY HUNTER", 90);
+    //welcomeText.anchor.set(0.5);
+    //this.menuGroup.add(welcomeText);
   }, 
 
   drawLevel: function () {
