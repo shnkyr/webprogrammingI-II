@@ -5,7 +5,7 @@ DEVELOPER: SHANKAR SAPKOTA
 
 # TOOLS USED
  
- THIS APP IS MADE USING HTML, JAVASCRIPT (Phaser Library) AND CSS.
+ THIS APP IS DEVELOPED USING HTML, JAVASCRIPT (Phaser framework) AND CSS.
  
  # LIVE : https://shnkyr.github.io/webprogrammingI/finalgame/
  
