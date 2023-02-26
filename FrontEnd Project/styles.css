@@ -1,0 +1,117 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color:lightcyan;
+}
+
+h1 {
+  text-align: center;
+}
+
+
+
+
+
+.done-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.remove-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.done-button:hover {
+  background-color: #0069d9;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+
+li b {
+  display: block;
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.done-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: 5px;
+  padding: 5px 10px;
+}
+
+.done-button:hover {
+  background-color: #3e8e41;
+}
+
+form {
+  display: inline-block;
+  margin: 20px;
+  vertical-align: top;
+  width: 40%;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="submit"] {
+  font-size: 1.2em;
+  padding: 5px;
+  width: 100%;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+input[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20%;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
