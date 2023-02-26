@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>MY PERSONAL DAIRY !!</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>MY PERSONAL DAIRY</h1>
+    
+    <form>
+     <u> <h3>ADD REMINDER !!</h3></u>
+      <label for="title">Subject ></label>
+      <input type="text" id="title" name="title" required><br><br>
+
+      <label for="message">Main Note ></label>
+      <input type="text" id="message" name="message" required><br><br>
+
+      <label for="date">Due Date ></label>
+      <input type="date" id="date" name="date" required><br><br>
+
+      <label for="date">Days Remain ></label>
+      <input type="text" id="daysremain" name="daysremain" required><br><br>
+
+      <input type="submit" value="Save It !!">
+    </form> </center><br> <hr>
+   
+    <div id="pending-tasks">
+      <h2>Pending Tasks</h2>
+      <ul></ul>
+    </div>
+    <div id="completed-tasks">
+      <h2>Completed Tasks</h2>
+      <ul></ul>
+    </div>
+    </center>
+    <script src="script.js"></script>
+  </body>
+</html>
