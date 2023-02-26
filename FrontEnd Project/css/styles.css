@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color:lightcyan;  
+  background-color: lightcyan;
 }
 
 h1 {
@@ -20,7 +20,8 @@ h1 {
   display: inline-block;
   margin: 20px;
   vertical-align: top;
-  width: 40%;
+  width: 100%;
+  max-width: 600px;
 }
 
 #pending-tasks li {
@@ -70,8 +71,6 @@ li {
   border-radius: 5px;
 }
 
-
-
 li b {
   display: block;
   font-size: 1.2em;
@@ -95,7 +94,8 @@ form {
   display: inline-block;
   margin: 20px;
   vertical-align: top;
-  width: 40%;
+  width: 100%;
+  max-width: 600px;
 }
 
 label {
@@ -137,3 +137,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   opacity: 0;
 }
+
+/* Media queries for responsiveness */
+
+@media screen and (max-width: 768px) {
+  #pending-tasks,
+  #completed-tasks,
+  form {
+    width: 90%;
+    margin: 20px auto;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  #pending-tasks,
+  #completed-tasks,
