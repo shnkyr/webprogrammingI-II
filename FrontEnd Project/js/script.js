@@ -1,4 +1,10 @@
-// get the form and input elements
+// Author: Shankar Sapkota
+// Site: https://shankarsapkota.com.np
+// email: shankarsapkota69@gmail.com
+        //  contact@shankarsapkota.com.np
+
+
+// Get the details from form first
 const form = document.querySelector('form');
 const titleInput = document.getElementById('title');
 const messageInput = document.getElementById('message');
@@ -9,7 +15,7 @@ const daysremainInput = document.getElementById('daysremain');
 const pendingTasksList = document.querySelector('#pending-tasks ul');
 const completedTasksList = document.querySelector('#completed-tasks ul');
 
-// check local storage for saved tasks
+// check for the local storage of browser for saved tasks
 let tasks = [];
 
 function loadTasks() {
@@ -29,7 +35,7 @@ function addTask(title, message, date, daysremain) {
   return task;
 }
 
-// function to display pending tasks
+// This function is to display the pending tasks
 function displayPendingTasks() {
   pendingTasksList.innerHTML = '';
   tasks.forEach((task, index) => {
@@ -42,7 +48,7 @@ function displayPendingTasks() {
   });
 }
 
-// function to display all completed tasks
+// This function is to display all completed tasks
 function displayCompletedTasks() {
   completedTasksList.innerHTML = '';
   tasks.forEach((task, index) => {
@@ -55,20 +61,20 @@ function displayCompletedTasks() {
   });
 }
 
-// function to mark a task as completed
+// Ths function will  mark a task as completed in pending state
 function markTaskAsCompleted(index) {
   tasks[index].status = 'completed';
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-// function to remove a completed task
+// this function will remove a task from completed section
 function removeCompletedTask(index) {
 tasks.splice(index, 1);
 localStorage.setItem('tasks', JSON.stringify(tasks));
 displayCompletedTasks();
 }
 
-// add event listener to remove buttons
+// Adding the event listener to remove buttons in completed task
 document.addEventListener('click', (event) => {
 if (event.target.classList.contains('remove-button')) {
 const index = event.target.dataset.index;
@@ -77,7 +83,7 @@ removeCompletedTask(index);
 });
 
 
-// add event listener to form submit button
+// Adding the  event listener to form submit button that takes to Pending State
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const title = titleInput.value;
@@ -94,7 +100,7 @@ form.addEventListener('submit', (event) => {
   dateInput.value = '';
 });
 
-// add event listener to done buttons
+// This will add the event listener to done buttons in pending task
 document.addEventListener('click', (event) => {
   if (event.target.classList.contains('done-button')) {
     const index = event.target.dataset.index;
@@ -104,5 +110,10 @@ document.addEventListener('click', (event) => {
   }
 });
 
-// load saved tasks on page load
+// Finally, we are checking to load saved tasks on page load or reload form local storage 
 loadTasks();
+
+
+// Remember this is a simple project done for Front End Skills Subject.
+
+// This project saves the task in sotrage file in your browser so, celaring the cahce or cookie will also remove the data
