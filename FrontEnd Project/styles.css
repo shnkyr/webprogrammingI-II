@@ -9,9 +9,31 @@ h1 {
   text-align: center;
 }
 
+#pending-tasks ul,
+#completed-tasks ul {
+  list-style: none;
+  padding: 0;
+}
 
+#pending-tasks,
+#completed-tasks {
+  display: inline-block;
+  margin: 20px;
+  vertical-align: top;
+  width: 40%;
+}
 
+#pending-tasks li {
+  background-color: #ffeeba;
+  margin: 5px 0;
+  padding: 5px;
+}
 
+#completed-tasks li {
+  background-color: #d4edda;
+  margin: 5px 0;
+  padding: 5px;
+}
 
 .done-button {
   background-color: #007bff;
