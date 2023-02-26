@@ -1,17 +1,19 @@
-// First i will get all the details from the form in html page
-
+// get the form and input elements
 const form = document.querySelector('form');
 const titleInput = document.getElementById('title');
 const messageInput = document.getElementById('message');
 const dateInput = document.getElementById('date');
 const daysremainInput = document.getElementById('daysremain');
 
+// get the pending tasks and completed tasks lists
 const pendingTasksList = document.querySelector('#pending-tasks ul');
-const completedTasksList = document.querySelector('#completed-tasks ul'); //here i am getting pending and completed task list
+const completedTasksList = document.querySelector('#completed-tasks ul');
 
-// i am creating function that will show the task from pending or completed
+// check local storage for saved tasks
+let tasks = [];
+
 function loadTasks() {
-  const savedTasks = getItem('tasks');
+  const savedTasks = localStorage.getItem('tasks');
   if (savedTasks) {
     tasks = JSON.parse(savedTasks);
     displayPendingTasks();
@@ -22,12 +24,12 @@ function loadTasks() {
 function addTask(title, message, date, daysremain) {
   const task = { title, message, date, daysremain, status: 'pending' };
   tasks.push(task);
-  setItem('tasks', JSON.stringify(tasks));
-  displayPendingTasks();  // i am calling function that will look for pending task list
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  displayPendingTasks(); // call the function to update the pending tasks list
   return task;
 }
 
-// this is a function that will show the pendign task list
+// function to display pending tasks
 function displayPendingTasks() {
   pendingTasksList.innerHTML = '';
   tasks.forEach((task, index) => {
@@ -40,7 +42,7 @@ function displayPendingTasks() {
   });
 }
 
-// this is a function that will show the completed task list
+// function to display all completed tasks
 function displayCompletedTasks() {
   completedTasksList.innerHTML = '';
   tasks.forEach((task, index) => {
@@ -53,7 +55,29 @@ function displayCompletedTasks() {
   });
 }
 
-// adding the  event listener to form submit button 
+// function to mark a task as completed
+function markTaskAsCompleted(index) {
+  tasks[index].status = 'completed';
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+// function to remove a completed task
+function removeCompletedTask(index) {
+tasks.splice(index, 1);
+localStorage.setItem('tasks', JSON.stringify(tasks));
+displayCompletedTasks();
+}
+
+// add event listener to remove buttons
+document.addEventListener('click', (event) => {
+if (event.target.classList.contains('remove-button')) {
+const index = event.target.dataset.index;
+removeCompletedTask(index);
+}
+});
+
+
+// add event listener to form submit button
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const title = titleInput.value;
@@ -70,7 +94,7 @@ form.addEventListener('submit', (event) => {
   dateInput.value = '';
 });
 
-// again adding the event listener to done buttons after the task in displayed in pending state
+// add event listener to done buttons
 document.addEventListener('click', (event) => {
   if (event.target.classList.contains('done-button')) {
     const index = event.target.dataset.index;
@@ -80,3 +104,5 @@ document.addEventListener('click', (event) => {
   }
 });
 
+// load saved tasks on page load
+loadTasks();
