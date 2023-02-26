@@ -9,6 +9,35 @@ h1 {
   text-align: center;
 }
 
+nav {
+  background-color: #333;
+  color: #fff;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+nav li {
+  float: left;
+}
+
+nav li a {
+  display: block;
+  color: #fff;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav li a:hover {
+  background-color: #111;
+}
+
+
 #pending-tasks ul,
 #completed-tasks ul {
   list-style: none;
@@ -138,9 +167,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
 
-/* Media queries for responsiveness */
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {        /* This is for responsiveness design */
   #pending-tasks,
   #completed-tasks,
   form {
