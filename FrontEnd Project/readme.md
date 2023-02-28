@@ -7,6 +7,8 @@ DEVELOPER NAME : SHANKAR SAPKOTA
 
 /// DOCUMENTATION REPORT FOR THIS GAME CAN BE PROVIDED THROUGH MAIL TO ANYONE REQUESTED.
 
+URL:   https://shnkyr.github.io/webprogrammingI-II/FrontEnd%20Project/
+
 # HOW TO USE IT
  
  1. You may run the webproject using the url provided above
